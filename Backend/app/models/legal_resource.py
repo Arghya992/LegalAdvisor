@@ -1,0 +1,20 @@
+"""Legal resource seed data matching the frontend demo data."""
+
+from typing import Any
+
+
+def seed_resources() -> list[dict[str, Any]]:
+    return [
+        {"id": "r1", "title": "Constitution of India — Fundamental Rights", "category": "constitution", "type": "Constitutional Provision", "description": "Overview of fundamental rights guaranteed under Part III of the Constitution, including equality, freedom, and constitutional remedies.", "isDemo": True, "metadata": {"jurisdiction": "India", "year": "1950", "authority": "Constituent Assembly"}},
+        {"id": "r2", "title": "Indian Penal Code — Overview", "category": "criminal", "type": "Statute", "description": "General framework defining criminal offences, penalties, and classifications of acts as offences against the state, person, and property.", "isDemo": True, "metadata": {"jurisdiction": "India", "year": "1860", "authority": "Legislature"}},
+        {"id": "r3", "title": "Code of Criminal Procedure", "category": "procedures", "type": "Procedural Law", "description": "Procedural framework for the administration of criminal law, including arrest, bail, trial, and appeal procedures.", "isDemo": True, "metadata": {"jurisdiction": "India", "year": "1973", "authority": "Legislature"}},
+        {"id": "r4", "title": "Consumer Protection Act", "category": "consumer", "type": "Statute", "description": "Framework for consumer disputes, rights of consumers, and the establishment of consumer dispute redressal mechanisms.", "isDemo": True, "metadata": {"jurisdiction": "India", "year": "2019", "authority": "Legislature"}},
+        {"id": "r5", "title": "Information Technology Act", "category": "cyber", "type": "Statute", "description": "Legal framework for electronic governance, digital signatures, cyber offences, and data protection provisions.", "isDemo": True, "metadata": {"jurisdiction": "India", "year": "2000", "authority": "Legislature"}},
+        {"id": "r6", "title": "Payment of Wages Act", "category": "labour", "type": "Statute", "description": "Regulation of wage payment timing, deductions, and enforcement mechanisms for employed persons.", "isDemo": True, "metadata": {"jurisdiction": "India", "year": "1936", "authority": "Legislature"}},
+        {"id": "r7", "title": "Contract Act — Essentials", "category": "civil", "type": "Statute", "description": "Core principles of contract formation, performance, breach, and available remedies in civil disputes.", "isDemo": True, "metadata": {"jurisdiction": "India", "year": "1872", "authority": "Legislature"}},
+        {"id": "r8", "title": "Transfer of Property Act", "category": "civil", "type": "Statute", "description": "Principles governing the transfer of property, including sale, mortgage, lease, and gift.", "isDemo": True, "metadata": {"jurisdiction": "India", "year": "1882", "authority": "Legislature"}},
+        {"id": "r9", "title": "Glossary: Habeas Corpus", "category": "glossary", "type": "Legal Term", "description": "A writ requiring a person under arrest to be brought before a court to secure their release unless lawful grounds are shown.", "isDemo": True, "metadata": {"jurisdiction": "General"}},
+        {"id": "r10", "title": "Glossary: Mens Rea", "category": "glossary", "type": "Legal Term", "description": "The mental element of a crime — the intention or knowledge of wrongdoing that constitutes part of a criminal offence.", "isDemo": True, "metadata": {"jurisdiction": "General"}},
+        {"id": "r11", "title": "Glossary: Locus Standi", "category": "glossary", "type": "Legal Term", "description": "The right or capacity to bring an action or to appear before a court.", "isDemo": True, "metadata": {"jurisdiction": "General"}},
+        {"id": "r12", "title": "National Legal Services Authority", "category": "government", "type": "Government Resource", "description": "Public resource providing free legal aid and services to eligible persons across the country.", "isDemo": True, "metadata": {"jurisdiction": "India", "authority": "Government"}},
+    ]
