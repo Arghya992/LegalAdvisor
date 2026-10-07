@@ -16,11 +16,27 @@ export default function LegalResources() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
     setLoading(true);
-    resourceService.getResources(activeCategory, searchQuery).then((data) => {
-      setResources(data);
-      setLoading(false);
-    });
+
+    resourceService
+      .getResources(activeCategory, searchQuery)
+      .then((data: LegalResource[]) => {
+        if (!isMounted) return;
+        setResources(data || []);
+      })
+      .catch((err: unknown) => {
+        if (!isMounted) return;
+        console.error('Error loading resources:', err);
+        setResources([]);
+      })
+      .finally(() => {
+        if (isMounted) setLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, [activeCategory, searchQuery]);
 
   const handleSelectCategory = (cat: string) => {
@@ -60,19 +76,19 @@ export default function LegalResources() {
             </h1>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8 border-y border-ink-600 py-6">
-              {selectedResource.metadata.jurisdiction && (
+              {selectedResource.metadata?.jurisdiction && (
                 <div>
                   <p className="text-[10px] uppercase tracking-label text-ivory-muted mb-1">Jurisdiction</p>
                   <p className="text-sm text-ivory">{selectedResource.metadata.jurisdiction}</p>
                 </div>
               )}
-              {selectedResource.metadata.year && (
+              {selectedResource.metadata?.year && (
                 <div>
                   <p className="text-[10px] uppercase tracking-label text-ivory-muted mb-1">Year</p>
                   <p className="text-sm text-ivory">{selectedResource.metadata.year}</p>
                 </div>
               )}
-              {selectedResource.metadata.authority && (
+              {selectedResource.metadata?.authority && (
                 <div>
                   <p className="text-[10px] uppercase tracking-label text-ivory-muted mb-1">Authority</p>
                   <p className="text-sm text-ivory">{selectedResource.metadata.authority}</p>
@@ -142,7 +158,7 @@ export default function LegalResources() {
           >
             All
           </button>
-          {RESOURCE_CATEGORIES.map((cat) => (
+          {RESOURCE_CATEGORIES.map((cat: { id: string; name: string }) => (
             <button
               key={cat.id}
               onClick={() => handleSelectCategory(cat.id)}
@@ -168,7 +184,7 @@ export default function LegalResources() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {resources.map((resource) => (
+            {resources.map((resource: LegalResource) => (
               <button
                 key={resource.id}
                 onClick={() => setSelectedResource(resource)}

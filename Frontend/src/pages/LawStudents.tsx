@@ -11,13 +11,49 @@ import type {
 } from '@/types';
 import { ArrowRight, RotateCw, Check, X, ChevronRight, Search } from 'lucide-react';
 
+// Fallback Mock Data
+const INITIAL_TOOLS: StudentTool[] = [
+  { id: 'flashcards', name: 'Flashcards', description: 'Review legal terms & provisions', icon: 'BookOpen', status: 'available' },
+  { id: 'quiz', name: 'Quiz Generator', description: 'Test your knowledge on key laws', icon: 'HelpCircle', status: 'available' },
+  { id: 'summarizer', name: 'Case Summarizer', description: 'Generate concise summaries', icon: 'FileText', status: 'beta' },
+  { id: 'explainer', name: 'Provision Explainer', description: 'Understand complex sections', icon: 'Cpu', status: 'beta' }
+];
+
+const INITIAL_MATERIALS: StudyMaterial[] = [
+  { id: '1', title: 'Constitutional Law - Article 21 Deep Dive', type: 'Notes', progress: 85, date: 'Oct 2026' },
+  { id: '2', title: 'BNS 2023 vs IPC 1860 Comparison', type: 'Guide', progress: 60, date: 'Oct 2026' },
+  { id: '3', title: 'Law of Torts - Negligence & Strict Liability', type: 'Summary', progress: 40, date: 'Sep 2026' }
+];
+
+const INITIAL_SAVED_CASES: SavedCase[] = [
+  { id: '1', title: 'Kesavananda Bharati v. State of Kerala', citation: 'AIR 1973 SC 1461', date: '1973', tags: ['Basic Structure', 'Constitution'], isDemo: true },
+  { id: '2', title: 'Maneka Gandhi v. Union of India', citation: 'AIR 1978 SC 597', date: '1978', tags: ['Article 21', 'Personal Liberty'], isDemo: true }
+];
+
+const INITIAL_NOTES: StudyNote[] = [
+  { id: '1', title: 'Essential Ingredients of Section 300 BNS', category: 'Criminal Law', excerpt: 'Key definitions and legal nuances replacing murder provisions under previous IPC laws.', date: 'Oct 2026' },
+  { id: '2', title: 'Doctrine of Severability & Eclipse', category: 'Constitutional Law', excerpt: 'How pre-constitutional laws interact with fundamental rights under Article 13.', date: 'Sep 2026' }
+];
+
+const INITIAL_FLASHCARDS: Flashcard[] = [
+  { id: '1', category: 'Constitutional Law', term: 'Article 21', definition: 'Protection of Life and Personal Liberty. No person shall be deprived of his life or personal liberty except according to procedure established by law.' },
+  { id: '2', category: 'Criminal Law', term: 'Cognizable Offense', definition: 'An offense in which a police officer may arrest an accused individual without a warrant.' },
+  { id: '3', category: 'Jurisprudence', term: 'Mens Rea', definition: 'The mental element or guilty mind required to establish criminal liability along with Actus Reus.' },
+  { id: '4', category: 'Constitutional Law', term: 'Basic Structure Doctrine', definition: 'Judicial doctrine establishing that certain fundamental features of the Constitution cannot be altered by parliamentary amendments.' }
+];
+
+const INITIAL_QUIZ: QuizQuestion[] = [
+  { id: '1', question: 'Which landmark case established the Basic Structure Doctrine?', options: ['Maneka Gandhi Case', 'Kesavananda Bharati Case', 'Golaknath Case', 'A.K. Gopalan Case'], correctIndex: 1, explanation: 'Kesavananda Bharati v. State of Kerala (1973) held that Parliament cannot alter basic Constitutional features.' },
+  { id: '2', question: 'What does "Mens Rea" refer to in criminal legal proceedings?', options: ['Guilty Act', 'Guilty Mind', 'Burden of Proof', 'Standard of Evidence'], correctIndex: 1, explanation: 'Mens Rea literally means a guilty mind or criminal intention.' }
+];
+
 export default function LawStudents() {
-  const [tools, setTools] = useState<StudentTool[]>([]);
-  const [materials, setMaterials] = useState<StudyMaterial[]>([]);
-  const [savedCases, setSavedCases] = useState<SavedCase[]>([]);
-  const [notes, setNotes] = useState<StudyNote[]>([]);
-  const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
-  const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>([]);
+  const [tools, setTools] = useState<StudentTool[]>(INITIAL_TOOLS);
+  const [materials, setMaterials] = useState<StudyMaterial[]>(INITIAL_MATERIALS);
+  const [savedCases, setSavedCases] = useState<SavedCase[]>(INITIAL_SAVED_CASES);
+  const [notes, setNotes] = useState<StudyNote[]>(INITIAL_NOTES);
+  const [flashcards, setFlashcards] = useState<Flashcard[]>(INITIAL_FLASHCARDS);
+  const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>(INITIAL_QUIZ);
 
   const [activeView, setActiveView] = useState<'dashboard' | 'flashcards' | 'quiz'>('dashboard');
   const [flippedCards, setFlippedCards] = useState<Set<string>>(new Set());
@@ -26,12 +62,12 @@ export default function LawStudents() {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    studentService.getTools().then(setTools);
-    studentService.getStudyMaterials().then(setMaterials);
-    studentService.getSavedCases().then(setSavedCases);
-    studentService.getStudyNotes().then(setNotes);
-    studentService.getFlashcards().then(setFlashcards);
-    studentService.getQuizQuestions().then(setQuizQuestions);
+    studentService.getTools().then((res) => { if (res && res.length) setTools(res); }).catch(() => {});
+    studentService.getStudyMaterials().then((res) => { if (res && res.length) setMaterials(res); }).catch(() => {});
+    studentService.getSavedCases().then((res) => { if (res && res.length) setSavedCases(res); }).catch(() => {});
+    studentService.getStudyNotes().then((res) => { if (res && res.length) setNotes(res); }).catch(() => {});
+    studentService.getFlashcards().then((res) => { if (res && res.length) setFlashcards(res); }).catch(() => {});
+    studentService.getQuizQuestions().then((res) => { if (res && res.length) setQuizQuestions(res); }).catch(() => {});
   }, []);
 
   const toggleFlip = (id: string) => {
@@ -186,7 +222,7 @@ export default function LawStudents() {
                     })}
                   </div>
                   {quizSubmitted && (
-                    <p className="text-xs text-ivory-muted mt-4 pl-1 leading-relaxed border-l border-ink-500 pl-3">
+                    <p className="text-xs text-ivory-muted mt-4 leading-relaxed border-l border-ink-500 pl-3">
                       {q.explanation}
                     </p>
                   )}
